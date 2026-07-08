@@ -1,0 +1,56 @@
+name: flags-api-prod
+
+# Ambiente de produção: consome a imagem publicada no Docker Hub (sem build),
+# com restart policy e limites de recursos em todos os serviços.
+
+services:
+  db:
+    image: postgres:17.2-alpine@sha256:7e5df973a74872482e320dcbdeb055e178d6f42de0558b083892c50cda833c96
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${DB_USER} -d ${DB_NAME}"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 512M
+    networks:
+      - flags-net
+
+  app:
+    # Imagem publicada, referenciada pela tag semver (sem instrução `build`).
+    image: pierrymedeiros/flags-api:1.0.0
+    restart: unless-stopped
+    env_file: .env
+    # As migrações são aplicadas pelo init da própria imagem (docker/start.js)
+    # antes de o servidor começar a escutar — sem passo manual.
+    ports:
+      - "${PORT:-3000}:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+    # Sem HEALTHCHECK aqui: a própria imagem já declara um (GET /health).
+    deploy:
+      resources:
+        limits:
+          cpus: "1.0"
+          memory: 256M
+    networks:
+      - flags-net
+
+volumes:
+  pgdata:
+
+networks:
+  flags-net:
+    name: flags-prod-net

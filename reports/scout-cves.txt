@@ -1,0 +1,23 @@
+
+
+## Overview
+
+                   │                      Analyzed Image                       
+───────────────────┼───────────────────────────────────────────────────────────
+ Target            │  pierrymedeiros/flags-api:1.0.0                           
+   digest          │  63082c37e36f                                             
+   platform        │ linux/amd64                                               
+   provenance      │ https://github.com/PierryMedeiros/fc4-docker-node-api.git 
+                   │  https://github.com/PierryMedeiros/fc4-docker-node-api/blob/46953f6ea904f522097eebc40534be3e583e373f                 
+   vulnerabilities │    0C     0H     0M     0L                                
+   size            │ 58 MB                                                     
+   packages        │ 101                                                       
+                   │                                                           
+ Base image        │  node:22.23.1-alpine                                      
+                   │  16e22a550f38                                             
+
+
+## Packages and Vulnerabilities
+
+  No vulnerable packages detected
+

@@ -1,0 +1,26 @@
+# Dependências e artefatos de build: reinstalados/recompilados dentro da imagem
+node_modules
+dist
+
+# Controle de versão e metadados
+.git
+.gitignore
+.github
+
+# Segredos e ambiente local — nunca entram na imagem
+.env
+.env.*
+!.env.example
+
+# Arquivos de containerização que não pertencem ao contexto da app
+compose.yaml
+compose.prod.yaml
+reports
+
+# Documentação e ruído de editor
+README.md
+*.md
+.vscode
+.idea
+.DS_Store
+npm-debug.log*
